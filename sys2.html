@@ -1,1 +1,420 @@
-<!-- 原 一期二期混助配药系统.html 内容在此 -->
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>一期+二期配药计算系统</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f5f7fa;
+  margin:0;
+  padding:20px;
+}
+h1{
+  font-size:26px;
+  text-align:center;
+  color:#1677ff;
+  margin-bottom:24px;
+}
+.phase-title{
+  font-size:22px;
+  text-align:center;
+  color:#333;
+  margin:30px 0 20px 0;
+  padding:12px;
+  background:#e6f4ff;
+  border-radius:8px;
+  border-left:5px solid #1677ff;
+}
+h2{
+  font-size:20px;
+  color:#333;
+  margin-bottom:12px;
+  border-left:4px solid #1677ff;
+  padding-left:12px;
+}
+.container{
+  max-width:1400px;
+  margin:0 auto;
+}
+.systems{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+  margin-bottom:20px;
+}
+@media(max-width:768px){
+  .systems{
+    grid-template-columns:1fr;
+  }
+}
+.system{
+  background:#fff;
+  padding:20px;
+  border-radius:8px;
+  box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
+.box{
+  background:#fff;
+  padding:16px;
+  margin-bottom:16px;
+  border-radius:8px;
+  box-shadow:0 2px 6px rgba(0,0,0,.08);
+}
+label{
+  display:block;
+  margin-top:10px;
+  font-weight:500;
+  color:#333;
+}
+input{
+  width:100%;
+  padding:10px;
+  font-size:18px;
+  margin-top:4px;
+  border:1px solid #d9d9d9;
+  border-radius:4px;
+  box-sizing:border-box;
+}
+input:focus{
+  outline:none;
+  border-color:#1677ff;
+}
+button{
+  margin-top:16px;
+  width:100%;
+  padding:12px;
+  font-size:18px;
+  background:#1677ff;
+  color:#fff;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  transition:background 0.3s;
+}
+button:hover{
+  background:#0958d9;
+}
+button:active{
+  background:#003eb3;
+}
+.result{
+  margin-top:12px;
+  font-size:16px;
+  line-height:1.7;
+}
+.formula{
+  background:#f0f2f5;
+  padding:10px;
+  border-radius:6px;
+  margin-top:6px;
+  font-size:14px;
+  color:#595959;
+}
+.warn{
+  color:#d4380d;
+  font-weight:bold;
+}
+.ok{
+  color:#389e0d;
+  font-weight:bold;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>配药计算系统（一期 + 二期）</h1>
+
+  <!-- ==================== 一期系统 ==================== -->
+
+  <div class="phase-title">一期配药系统</div>
+
+  <div class="systems">
+    <!-- 一期混凝剂系统 -->
+    <div class="system">
+      <h2>混凝剂系统</h2>
+
+```
+  <div class="box">
+    <label>固体药剂投加量（吨）</label>
+    <input id="m_coag_p1" type="number" step="0.01">
+
+    <label>目标配置浓度（%）</label>
+    <input id="c_coag_p1" type="number" step="0.01">
+
+    <button onclick="calcCoagP1()">计算</button>
+  </div>
+
+  <div class="box result" id="out_coag_p1"></div>
+</div>
+
+<!-- 一期助凝剂系统（益维净） -->
+<div class="system">
+  <h2>助凝剂系统（益维净）</h2>
+  
+  <div class="box">
+    <label>计量桶液位高度 H（m）</label>
+    <input id="h_aid_p1" type="number" step="0.01">
+
+    <label>目标配置浓度（%）</label>
+    <input id="c_aid_p1" type="number" step="0.1">
+
+    <button onclick="calcAidP1()">计算</button>
+  </div>
+
+  <div class="box result" id="out_aid_p1"></div>
+</div>
+```
+
+  </div>
+
+  <!-- ==================== 二期系统 ==================== -->
+
+  <div class="phase-title">二期配药系统</div>
+
+  <div class="systems">
+    <!-- 二期混凝剂系统 -->
+    <div class="system">
+      <h2>混凝剂系统</h2>
+
+```
+  <div class="box">
+    <label>固体药剂投加量（吨）</label>
+    <input id="m_coag_p2" type="number" step="0.01">
+
+    <label>目标配置浓度（%）</label>
+    <input id="c_coag_p2" type="number" step="0.01">
+
+    <button onclick="calcCoagP2()">计算</button>
+  </div>
+
+  <div class="box result" id="out_coag_p2"></div>
+</div>
+
+<!-- 二期助凝剂系统 -->
+<div class="system">
+  <h2>助凝剂系统</h2>
+  
+  <div class="box">
+    <label>计量桶液位高度 H（m）</label>
+    <input id="h_aid_p2" type="number" step="0.01">
+
+    <label>目标配置浓度（%）</label>
+    <input id="c_aid_p2" type="number" step="0.1">
+
+    <button onclick="calcAidP2()">计算</button>
+  </div>
+
+  <div class="box result" id="out_aid_p2"></div>
+</div>
+```
+
+  </div>
+</div>
+
+<script>
+// ========================================
+// 一期混凝剂计算函数
+// ========================================
+function calcCoagP1(){
+  const M = parseFloat(document.getElementById('m_coag_p1').value);
+  const C = parseFloat(document.getElementById('c_coag_p1').value)/100;
+
+  if(isNaN(M)||isNaN(C)||C<=0||M<=0){
+    document.getElementById('out_coag_p1').innerHTML='<span class="warn">请输入有效数值</span>';
+    return;
+  }
+
+  const V_need = M / C;
+  const V_diss_max = 20;
+  const A_diss = 8;
+  const A_sol = 37.21;
+
+  let html = "";
+
+  if(V_need <= V_diss_max){
+    const H = V_need / A_diss;
+    html += "<div class='ok'>工况一：仅使用溶解池即可满足目标浓度</div>";
+    html += "所需总体积：" + V_need.toFixed(2) + " m³<br>";
+    html += "溶解池液位高度：" + H.toFixed(2) + " m（≤2.5 m）<br>";
+    html += "无需启用溶液池补水";
+  }else{
+    const V_add = V_need - V_diss_max;
+    const H_add = V_add / A_sol;
+    const H_final = V_need / A_sol;
+
+    html += "<div class='warn'>工况二：溶解池加满仍超浓，需要溶液池补水</div>";
+    html += "溶解池体积：20.00 m³（液位 2.5 m）<br>";
+    html += "最终所需总体积：" + V_need.toFixed(2) + " m³<br>";
+    html += "溶液池需补水体积：" + V_add.toFixed(2) + " m³<br>";
+    html += "折算补水高度：" + H_add.toFixed(2) + " m<br>";
+
+    if(H_final > 3.2){
+      html += "<span class='warn'>⚠ 溶液池最终液位 " + H_final.toFixed(2) + " m ＞ 3.2 m，发生溢流</span>";
+    }else{
+      html += "<span class='ok'>溶液池最终液位：" + H_final.toFixed(2) + " m（安全）</span>";
+    }
+  }
+
+  document.getElementById('out_coag_p1').innerHTML = html;
+}
+
+// ========================================
+// 一期助凝剂（益维净）计算函数
+// ========================================
+function calcAidP1(){
+  const H = parseFloat(document.getElementById('h_aid_p1').value);
+  const C = parseFloat(document.getElementById('c_aid_p1').value);
+
+  if(isNaN(H)||isNaN(C)||H<=0||C<=0){
+    document.getElementById('out_aid_p1').innerHTML='<span class="warn">请输入有效数值</span>';
+    return;
+  }
+
+  const r = 0.66;
+  const density = 1380; // kg/m3
+  const poolArea = 6.8 * 4;
+  const poolMaxH = 3.0;
+
+  const PI = 3.14;
+  const V_drug_raw = PI * r * r * H;
+  const M_drug_raw = V_drug_raw * density;
+
+  const M_total_raw = M_drug_raw / (C / 100);
+  const V_total_raw = M_total_raw / 1000;
+
+  const V_add_raw = V_total_raw - V_drug_raw;
+  const H_add_raw = V_add_raw / poolArea;
+
+  let html = "";
+  html += `计量桶原液体积：${V_drug_raw.toFixed(2)} m³<br>`;
+  html += `计量桶原液质量：${M_drug_raw.toFixed(2)} kg<br><br>`;
+
+  html += `目标所需总体积：${V_total_raw.toFixed(2)} m³<br>`;
+  html += `<div class="formula">公式：V总 = (原液质量 ÷ 目标浓度) ÷ 1000</div><br>`;
+
+  html += `溶液池需补水体积：${V_add_raw.toFixed(2)} m³<br>`;
+  html += `<div class="formula">公式：V补水 = V总 − 原液体积</div><br>`;
+
+  html += `折算补水高度：${H_add_raw.toFixed(2)} m<br>`;
+  html += `<div class="formula">公式：H补水 = V补水 ÷ 溶液池面积</div><br>`;
+
+  if(H_add_raw > poolMaxH){
+    html += `<span class="warn">⚠ 溶液池最终液位 ${H_add_raw.toFixed(2)} m ＞ ${poolMaxH} m，发生溢流</span>`;
+  }else{
+    html += `<span class="ok">✓ 溶液池液位 ${H_add_raw.toFixed(2)} m，安全</span>`;
+  }
+
+  document.getElementById('out_aid_p1').innerHTML = html;
+}
+
+// ========================================
+// 二期混凝剂计算函数
+// ========================================
+function calcCoagP2(){
+  const M = parseFloat(document.getElementById('m_coag_p2').value);
+  const C = parseFloat(document.getElementById('c_coag_p2').value)/100;
+
+  if(isNaN(M)||isNaN(C)||C<=0||M<=0){
+    document.getElementById('out_coag_p2').innerHTML='<span class="warn">请输入有效数值</span>';
+    return;
+  }
+
+  // 二期参数：溶解池两座，单座 3.6×2.4×2.6
+  const A_diss_single = 3.6 * 2.4;
+  const H_diss_max = 2.6;
+  const V_diss_max = A_diss_single * H_diss_max * 2; // 两座
+
+  // 溶液池：5.4×4.6×2.7
+  const A_sol = 5.4 * 4.6;
+  const H_sol_max = 2.7;
+
+  const V_need = M / C;
+
+  let html = "";
+
+  if(V_need <= V_diss_max){
+    const H = V_need / (A_diss_single * 2);
+    html += "<div class='ok'>工况一：仅使用溶解池即可满足目标浓度</div>";
+    html += "所需总体积：" + V_need.toFixed(2) + " m³<br>";
+    html += "两座溶解池平均液位高度：" + H.toFixed(2) + " m（≤" + H_diss_max + " m）<br>";
+    html += "无需启用溶液池补水";
+  }else{
+    const V_add = V_need - V_diss_max;
+    const H_add = V_add / A_sol;
+    const H_final = V_need / A_sol;
+
+    html += "<div class='warn'>工况二：溶解池加满仍超浓，需要溶液池补水</div>";
+    html += "溶解池总体积：" + V_diss_max.toFixed(2) + " m³（两座，液位 " + H_diss_max + " m）<br>";
+    html += "最终所需总体积：" + V_need.toFixed(2) + " m³<br>";
+    html += "溶液池需补水体积：" + V_add.toFixed(2) + " m³<br>";
+    html += "折算补水高度：" + H_add.toFixed(2) + " m<br>";
+
+    if(H_final > H_sol_max){
+      html += "<span class='warn'>⚠ 溶液池最终液位 " + H_final.toFixed(2) + " m ＞ " + H_sol_max + " m，发生溢流</span>";
+    }else{
+      html += "<span class='ok'>溶液池最终液位：" + H_final.toFixed(2) + " m（安全）</span>";
+    }
+  }
+
+  document.getElementById('out_coag_p2').innerHTML = html;
+}
+
+// ========================================
+// 二期助凝剂计算函数
+// ========================================
+function calcAidP2(){
+  const H = parseFloat(document.getElementById('h_aid_p2').value);
+  const C = parseFloat(document.getElementById('c_aid_p2').value);
+
+  if(isNaN(H)||isNaN(C)||H<=0||C<=0){
+    document.getElementById('out_aid_p2').innerHTML='<span class="warn">请输入有效数值</span>';
+    return;
+  }
+
+  // 二期参数：计量桶长方体 1.26×1.26×1.5
+  const tank_L = 1.26;
+  const tank_W = 1.26;
+  const density = 1380; // kg/m3
+
+  // 溶液池：5.4×4.5×2.9
+  const poolArea = 5.4 * 4.5;
+  const poolMaxH = 2.9;
+
+  const V_drug_raw = tank_L * tank_W * H;
+  const M_drug_raw = V_drug_raw * density;
+
+  const M_total_raw = M_drug_raw / (C / 100);
+  const V_total_raw = M_total_raw / 1000;
+
+  const V_add_raw = V_total_raw - V_drug_raw;
+  const H_add_raw = V_add_raw / poolArea;
+
+  let html = "";
+  html += `计量桶原液体积：${V_drug_raw.toFixed(2)} m³<br>`;
+  html += `计量桶原液质量：${M_drug_raw.toFixed(2)} kg<br><br>`;
+
+  html += `目标所需总体积：${V_total_raw.toFixed(2)} m³<br>`;
+  html += `<div class="formula">公式：V总 = (原液质量 ÷ 目标浓度) ÷ 1000</div><br>`;
+
+  html += `溶液池需补水体积：${V_add_raw.toFixed(2)} m³<br>`;
+  html += `<div class="formula">公式：V补水 = V总 − 原液体积</div><br>`;
+
+  html += `折算补水高度：${H_add_raw.toFixed(2)} m<br>`;
+  html += `<div class="formula">公式：H补水 = V补水 ÷ 溶液池面积</div><br>`;
+
+  if(H_add_raw > poolMaxH){
+    html += `<span class="warn">⚠ 溶液池最终液位 ${H_add_raw.toFixed(2)} m ＞ ${poolMaxH} m，发生溢流</span>`;
+  }else{
+    html += `<span class="ok">✓ 溶液池液位 ${H_add_raw.toFixed(2)} m，安全</span>`;
+  }
+
+  document.getElementById('out_aid_p2').innerHTML = html;
+}
+</script>
+
+</body>
+</html>
