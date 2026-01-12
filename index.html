@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>水厂药剂综合系统</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1677ff">
+  <style>
+    html,body{margin:0;padding:0;height:100%;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto}
+    .nav{display:flex;height:52px;background:#1677ff}
+    .nav button{flex:1;border:none;background:#1677ff;color:#fff;font-size:16px}
+    .nav button.active{background:#0958d9}
+    iframe{width:100%;height:calc(100% - 52px);border:none}
+  </style>
+</head>
+<body>
+<div class="nav">
+  <button class="active" onclick="show(0)">加药加氯</button>
+  <button onclick="show(1)">配药系统</button>
+  <button onclick="show(2)">消耗核算</button>
+</div>
+<iframe src="sys1.html"></iframe>
+<iframe src="sys2.html" style="display:none"></iframe>
+<iframe src="sys3.html" style="display:none"></iframe>
+<script>
+const frames=document.querySelectorAll("iframe");
+const btns=document.querySelectorAll("button");
+function show(i){
+  frames.forEach((f,idx)=>f.style.display=idx===i?"block":"none");
+  btns.forEach((b,idx)=>b.classList.toggle("active",idx===i));
+}
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js');
+}
+</script>
+</body>
+</html>
