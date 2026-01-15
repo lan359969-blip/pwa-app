@@ -336,7 +336,6 @@ animation: fadeInOut 2s;
 }
 </style>
 
-<script src="../assets/js/system-params.js"></script>
 </head>
 <body>
 
@@ -644,17 +643,17 @@ animation: fadeInOut 2s;
 (function() {
   const els = document.querySelectorAll('input, textarea');
   els.forEach(e => {
-    const v = SystemParams.get(e.id);
+    const v = localStorage.getItem(e.id);
     if (v !== null) e.value = v;
-    e.addEventListener('input', () => SystemParams.set(e.id, e.value));
+    e.addEventListener('input', () => localStorage.setItem(e.id, e.value));
   });
   
   // 初始化水量分配比例（如果没有保存过，默认25%）
-  if (!SystemParams.get('water_ratio_51')) {
-    SystemParams.set('water_ratio_51', '0.25');
-    SystemParams.set('water_ratio_52', '0.25');
-    SystemParams.set('water_ratio_61', '0.25');
-    SystemParams.set('water_ratio_62', '0.25');
+  if (!localStorage.getItem('water_ratio_51')) {
+    localStorage.setItem('water_ratio_51', '0.25');
+    localStorage.setItem('water_ratio_52', '0.25');
+    localStorage.setItem('water_ratio_61', '0.25');
+    localStorage.setItem('water_ratio_62', '0.25');
   }
 })();
 
@@ -663,10 +662,10 @@ document.getElementById('56').addEventListener('input', function() {
   const total = parseFloat(this.value) || 0;
   
   // 读取保存的比例
-  const ratio51 = parseFloat(SystemParams.get('water_ratio_51')) || 0.25;
-  const ratio52 = parseFloat(SystemParams.get('water_ratio_52')) || 0.25;
-  const ratio61 = parseFloat(SystemParams.get('water_ratio_61')) || 0.25;
-  const ratio62 = parseFloat(SystemParams.get('water_ratio_62')) || 0.25;
+  const ratio51 = parseFloat(localStorage.getItem('water_ratio_51')) || 0.25;
+  const ratio52 = parseFloat(localStorage.getItem('water_ratio_52')) || 0.25;
+  const ratio61 = parseFloat(localStorage.getItem('water_ratio_61')) || 0.25;
+  const ratio62 = parseFloat(localStorage.getItem('water_ratio_62')) || 0.25;
   
   // 按比例分配
   document.getElementById('water_51').value = Math.round(total * ratio51);
@@ -675,10 +674,10 @@ document.getElementById('56').addEventListener('input', function() {
   document.getElementById('water_62').value = Math.round(total * ratio62);
   
   // 保存分配后的值
-  SystemParams.set('water_51', document.getElementById('water_51').value);
-  SystemParams.set('water_52', document.getElementById('water_52').value);
-  SystemParams.set('water_61', document.getElementById('water_61').value);
-  SystemParams.set('water_62', document.getElementById('water_62').value);
+  localStorage.setItem('water_51', document.getElementById('water_51').value);
+  localStorage.setItem('water_52', document.getElementById('water_52').value);
+  localStorage.setItem('water_61', document.getElementById('water_61').value);
+  localStorage.setItem('water_62', document.getElementById('water_62').value);
 });
 
 // 手动修改某个系列水量时，重新计算比例并保存
@@ -691,14 +690,14 @@ function updateWaterRatio() {
   
   if (total > 0) {
     // 计算新比例
-    SystemParams.set('water_ratio_51', (w51 / total).toFixed(4));
-    SystemParams.set('water_ratio_52', (w52 / total).toFixed(4));
-    SystemParams.set('water_ratio_61', (w61 / total).toFixed(4));
-    SystemParams.set('water_ratio_62', (w62 / total).toFixed(4));
+    localStorage.setItem('water_ratio_51', (w51 / total).toFixed(4));
+    localStorage.setItem('water_ratio_52', (w52 / total).toFixed(4));
+    localStorage.setItem('water_ratio_61', (w61 / total).toFixed(4));
+    localStorage.setItem('water_ratio_62', (w62 / total).toFixed(4));
     
     // 同步更新56系总水量
     document.getElementById('56').value = Math.round(total);
-    SystemParams.set('56', Math.round(total));
+    localStorage.setItem('56', Math.round(total));
   }
 }
 
@@ -891,10 +890,10 @@ function apply56Split() {
   const total56 = parseFloat(document.getElementById('56').value) || 0;
   if (total56 <= 0) return;
 
-  const r51 = parseFloat(SystemParams.get('water_ratio_51')) || 0.25;
-  const r52 = parseFloat(SystemParams.get('water_ratio_52')) || 0.25;
-  const r61 = parseFloat(SystemParams.get('water_ratio_61')) || 0.25;
-  const r62 = parseFloat(SystemParams.get('water_ratio_62')) || 0.25;
+  const r51 = parseFloat(localStorage.getItem('water_ratio_51')) || 0.25;
+  const r52 = parseFloat(localStorage.getItem('water_ratio_52')) || 0.25;
+  const r61 = parseFloat(localStorage.getItem('water_ratio_61')) || 0.25;
+  const r62 = parseFloat(localStorage.getItem('water_ratio_62')) || 0.25;
 
   document.getElementById('water_51').value = Math.round(total56 * r51);
   document.getElementById('water_52').value = Math.round(total56 * r52);
@@ -902,97 +901,6 @@ function apply56Split() {
   document.getElementById('water_62').value = Math.round(total56 * r62);
 }
 
-</script>
-
-
-<!-- === 系统参数配置（默认值，不参与实时计算） === -->
-<div id="sysParamPanel" style="border:1px solid #ddd;padding:10px;margin:10px 0;">
-  <strong>系统参数（默认）</strong>
-  <div style="font-size:12px;color:#666;">页面刷新后作为默认值注入，临时修改不影响此处</div>
-  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-top:6px;">
-    <label>一期混凝剂浓度 <input id="p_yq_hn" type="number"></label>
-    <label>一期助凝剂浓度 <input id="p_yq_zn" type="number"></label>
-    <label>二期混凝剂浓度 <input id="p_eq_hn" type="number"></label>
-    <label>二期助凝剂浓度 <input id="p_eq_zn" type="number"></label>
-    <label>一期有效氯 <input id="p_yq_cl" type="number"></label>
-    <label>二期有效氯 <input id="p_eq_cl" type="number"></label>
-  </div>
-</div>
-<script>
-(function(){
-  const map = [
-    ['p_yq_hn','yq_hn'],
-    ['p_yq_zn','yq_zn'],
-    ['p_eq_hn','eq_hn'],
-    ['p_eq_zn','eq_zn'],
-    ['p_yq_cl','yq_cl'],
-    ['p_eq_cl','eq_cl']
-  ];
-  // load defaults
-  map.forEach(([p,id])=>{
-    const v = SystemParams.get(p);
-    if(v!==null) document.getElementById(p).value=v;
-  });
-  // save defaults
-  map.forEach(([p])=>{
-    document.getElementById(p).addEventListener('change',e=>{
-      SystemParams.set(p,e.target.value);
-    });
-  });
-  // inject defaults once on load if target empty
-  window.addEventListener('load',()=>{
-    map.forEach(([p,id])=>{
-      const pv=document.getElementById(p).value;
-      const t=document.getElementById(id);
-      if(t && (t.value===''||t.value==null) && pv!==''){
-        t.value=pv;
-      }
-    });
-  });
-})();
-</script>
-
-
-<style>
-#sysParamPanel{background:#fafafa}
-#sysParamPanel .fold{cursor:pointer;color:#007aff}
-.tip{font-size:12px;color:#999;margin-top:2px}
-.hidden{display:none}
-</style>
-<script>
-(function(){
-  // fold
-  const panel=document.getElementById('sysParamPanel');
-  if(panel){
-    const btn=document.createElement('div');
-    btn.className='fold';
-    btn.innerText='展开/折叠 系统参数';
-    btn.onclick=()=>panel.classList.toggle('collapsed');
-    panel.prepend(btn);
-  }
-  // ratios
-  const ratios=['r51','r52','r61','r62'];
-  ratios.forEach(id=>{
-    const v=SystemParams.get(id);
-    if(v!==null) document.getElementById(id).value=v;
-    document.getElementById(id).addEventListener('change',e=>SystemParams.set(id,e.target.value));
-  });
-  // light tips on clear
-  document.querySelectorAll('input[type=number]').forEach(inp=>{
-    inp.addEventListener('blur',()=>{
-      if(inp.value===''){
-        if(!inp.nextElementSibling||!inp.nextElementSibling.classList.contains('tip')){
-          const t=document.createElement('div');
-          t.className='tip';
-          t.innerText='默认来自系统参数';
-          inp.after(t);
-        }
-      }else{
-        if(inp.nextElementSibling&&inp.nextElementSibling.classList.contains('tip')) inp.nextElementSibling.remove();
-      }
-    });
-  });
-})();
 </script>
 
 </body>
