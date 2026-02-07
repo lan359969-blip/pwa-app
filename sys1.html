@@ -741,16 +741,16 @@ function do_cal() {
   var zn_fdiff1 = parseInt(document.getElementById("ZN_fdiff1").value);
   var zn_fdiff2 = parseInt(document.getElementById("ZN_fdiff2").value);
 
-  var hn_a = (hn_adiff * hn_concen * 2 * 10000 / ab).toFixed(2);
-  var hn_b = (hn_bdiff * hn_concen * 2 * 10000 / ab).toFixed(2);
-  var hn_c = (hn_cdiff * hn_concen * 2 * 10000 / cd).toFixed(2);
-  var hn_d = (hn_ddiff * hn_concen * 2 * 10000 / cd).toFixed(2);
+  var hn_a = (hn_adiff * hn_concen * 2 * k *10000 / ab).toFixed(2);
+  var hn_b = (hn_bdiff * hn_concen * 2 * k *10000 / ab).toFixed(2);
+  var hn_c = (hn_cdiff * hn_concen * 2 * k *10000 / cd).toFixed(2);
+  var hn_d = (hn_ddiff * hn_concen * 2 * k *10000 / cd).toFixed(2);
   
   // 使用各系列精确水量计算（去掉系数4，因为分母已是精确水量）
-  var hn_e1 = (hn_ediff1 * hn_concen2 * 10000 / w51).toFixed(2);
-  var hn_e2 = (hn_ediff2 * hn_concen2 * 10000 / w52).toFixed(2);
-  var hn_f1 = (hn_fdiff1 * hn_concen2 * 10000 / w61).toFixed(2);
-  var hn_f2 = (hn_fdiff2 * hn_concen2 * 10000 / w62).toFixed(2);
+  var hn_e1 = (hn_ediff1 * hn_concen2 * k *10000 / w51).toFixed(2);
+  var hn_e2 = (hn_ediff2 * hn_concen2 * k *10000 / w52).toFixed(2);
+  var hn_f1 = (hn_fdiff1 * hn_concen2 * k *10000 / w61).toFixed(2);
+  var hn_f2 = (hn_fdiff2 * hn_concen2 * k *10000 / w62).toFixed(2);
 
   var zn_a = (zn_adiff * zn_concen * 2 * 10000 / ab).toFixed(2);
   var zn_b = (zn_bdiff * zn_concen * 2 * 10000 / ab).toFixed(2);
