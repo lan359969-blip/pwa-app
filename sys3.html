@@ -487,7 +487,7 @@ animation: shake 0.5s;
   </div>
 
   <div class="footer">
-    药剂消耗核算系统 v2.1 | 数据自动保存
+    药剂消耗核算系统 v2.2 | 数据自动保存
   </div>
 </div>
 
@@ -573,7 +573,7 @@ function showToast(message) {
 }
 
 // Enter键跳转到下一个输入框
-const inputs = Array.from(document.querySelectorAll('input'));
+const inputs = Array.from(document.querySelectorAll('input[type="number"]'));
 inputs.forEach((el, idx) => {
   el.addEventListener('keydown', function(e) {
     if (e.key === 'Enter') {
